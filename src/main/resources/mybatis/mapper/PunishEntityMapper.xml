@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jason.springboot.dao.PunishEntityMapper">
+  <resultMap id="BaseResultMap" type="com.jason.springboot.model.PunishEntity">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="title" jdbcType="VARCHAR" property="title" />
+    <result column="categoryId" jdbcType="INTEGER" property="categoryid" />
+    <result column="parentId" jdbcType="INTEGER" property="parentid" />
+    <result column="level" jdbcType="INTEGER" property="level" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.jason.springboot.model.PunishEntityWithBLOBs">
+    <result column="chapter" jdbcType="LONGVARCHAR" property="chapter" />
+    <result column="items" jdbcType="LONGVARCHAR" property="items" />
+    <result column="content" jdbcType="LONGVARCHAR" property="content" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, title, categoryId, parentId, level
+  </sql>
+  <sql id="Blob_Column_List">
+    chapter, items, content
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from punish
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from punish
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" keyProperty="id" useGeneratedKeys="true" parameterType="com.jason.springboot.model.PunishEntityWithBLOBs">
+    insert into punish (id, title, categoryId, 
+      parentId, level, chapter, 
+      items, content)
+    values (#{id,jdbcType=INTEGER}, #{title,jdbcType=VARCHAR}, #{categoryid,jdbcType=INTEGER}, 
+      #{parentid,jdbcType=INTEGER}, #{level,jdbcType=INTEGER}, #{chapter,jdbcType=LONGVARCHAR}, 
+      #{items,jdbcType=LONGVARCHAR}, #{content,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" keyProperty="id" useGeneratedKeys="true" parameterType="com.jason.springboot.model.PunishEntityWithBLOBs">
+    insert into punish
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="title != null">
+        title,
+      </if>
+      <if test="categoryid != null">
+        categoryId,
+      </if>
+      <if test="parentid != null">
+        parentId,
+      </if>
+      <if test="level != null">
+        level,
+      </if>
+      <if test="chapter != null">
+        chapter,
+      </if>
+      <if test="items != null">
+        items,
+      </if>
+      <if test="content != null">
+        content,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="title != null">
+        #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="categoryid != null">
+        #{categoryid,jdbcType=INTEGER},
+      </if>
+      <if test="parentid != null">
+        #{parentid,jdbcType=INTEGER},
+      </if>
+      <if test="level != null">
+        #{level,jdbcType=INTEGER},
+      </if>
+      <if test="chapter != null">
+        #{chapter,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="items != null">
+        #{items,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="content != null">
+        #{content,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.jason.springboot.model.PunishEntityWithBLOBs">
+    update punish
+    <set>
+      <if test="title != null">
+        title = #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="categoryid != null">
+        categoryId = #{categoryid,jdbcType=INTEGER},
+      </if>
+      <if test="parentid != null">
+        parentId = #{parentid,jdbcType=INTEGER},
+      </if>
+      <if test="level != null">
+        level = #{level,jdbcType=INTEGER},
+      </if>
+      <if test="chapter != null">
+        chapter = #{chapter,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="items != null">
+        items = #{items,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="content != null">
+        content = #{content,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.jason.springboot.model.PunishEntityWithBLOBs">
+    update punish
+    set title = #{title,jdbcType=VARCHAR},
+      categoryId = #{categoryid,jdbcType=INTEGER},
+      parentId = #{parentid,jdbcType=INTEGER},
+      level = #{level,jdbcType=INTEGER},
+      chapter = #{chapter,jdbcType=LONGVARCHAR},
+      items = #{items,jdbcType=LONGVARCHAR},
+      content = #{content,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.jason.springboot.model.PunishEntity">
+    update punish
+    set title = #{title,jdbcType=VARCHAR},
+      categoryId = #{categoryid,jdbcType=INTEGER},
+      parentId = #{parentid,jdbcType=INTEGER},
+      level = #{level,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>
