@@ -27,6 +27,7 @@ public class StartUpController {
 
         Spider.create(new HupuBxjPageProcessor())
                 //中国共产党纪律处分条例
+                // .setCharset("GB2312")
 //                .addUrl("http://cpc.people.com.cn/GB/64162/71380/71382/71384/4856229.html")
                 //中华人民共和国行政监察法
 //                .addUrl("http://www.gov.cn/jrzg/2010-06/26/content_1637915.htm")
@@ -35,7 +36,19 @@ public class StartUpController {
                 //中国共产党章程
 //                .addUrl("http://www.12371.cn/2017/10/28/ARTI1509191507150883.shtml")
                 //行政机关公务员处分条例
-                .addUrl("http://jxw.panzhihua.gov.cn/xxgk/zdxxgk/lzjy/698611.shtml")
+//                .addUrl("http://jxw.panzhihua.gov.cn/xxgk/zdxxgk/lzjy/698611.shtml")
+                //中国共产党纪律检查机关案件检查工作条例
+                // .setCharset("GB2312")
+//                .addUrl("http://cpc.people.com.cn/GB/64162/71380/71387/71590/4855987.html")
+                //中国共产党纪律检查机关案件检查工作条例实施细则
+                // .setCharset("GB2312")
+//                .addUrl("http://cpc.people.com.cn/GB/64162/71380/71387/71590/4855997.html")
+                //中国共产党纪律检查机关控告申诉工作条例
+                // .setCharset("GB2312")
+//                .addUrl("http://cpc.people.com.cn/GB/64162/71380/71387/71590/4855976.html")
+                //监察机关举报工作办法
+                // .setCharset("UTF-8")
+                .addUrl("http://www.gov.cn/fwxx/content_2266820.htm")
                 .addPipeline(hupuSpiderPipeline)
                 .thread(4)
                 .run();

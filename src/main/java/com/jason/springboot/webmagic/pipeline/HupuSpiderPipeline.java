@@ -25,10 +25,11 @@ public class HupuSpiderPipeline implements Pipeline {
 
     @Autowired
     private PunishEntityMapper punishEntityMapper;
+    NumberChangeToChinese numToChinese = new NumberChangeToChinese();
 
     @Override
     public void process(ResultItems resultItems, Task task) {
-        NumberChangeToChinese numToChinese = new NumberChangeToChinese();
+
         for (Map.Entry<String, Object> entry : resultItems.getAll().entrySet()) {
             if (entry.getKey().equals("punishInfo")) {
                 PunishDTO punishDTO = (PunishDTO) entry.getValue();
@@ -495,7 +496,362 @@ public class HupuSpiderPipeline implements Pipeline {
                     }
                 }
             }
+            if (entry.getKey().equals("aodrInfo")) {
+                PunishDTO punishDTO = (PunishDTO) entry.getValue();
+                List<String> itemList = new ArrayList<>();
+                List<String> items = new ArrayList<>();
+                List<String> itemGroup1 = new ArrayList<>();
+                List<String> itemGroup2 = new ArrayList<>();
+                List<String> itemGroup3 = new ArrayList<>();
+                List<String> itemGroup4 = new ArrayList<>();
+                List<String> itemGroup5 = new ArrayList<>();
+                List<String> itemGroup6 = new ArrayList<>();
+                List<String> itemGroup7 = new ArrayList<>();
+                if (punishDTO.getChapterList() != null && !punishDTO.getChapterList().isEmpty()) {
+                    for (String item : punishDTO.getChapterList()) {
+                        if (!item.equals("")) {
+                            itemList.add(item);
+                        }
+                    }
+                    if (itemList != null && !itemList.isEmpty()) {
+                        int itnum = 1;
+                        String item = "";
+                        for (String it : itemList) {
+                            String nums = numToChinese.tranWan(itnum);
+                            String s = "第" + nums + "条";
+                            int k = it.indexOf(s);
+                            if (k == -1) {
+                                item += it;
+                                for (String c : items) {
+                                    if (item.indexOf(c) != -1) {
+                                        items.remove(c);
+                                        break;
+                                    }
+                                }
+                                items.add(item);
+                            } else {
+                                item = it;
+                                items.add(item);
+                                itnum++;
+                            }
+                        }
+                        itemGroup1 = items.subList(0, 5);
+                        itemGroup2 = items.subList(5, 17);
+                        itemGroup3 = items.subList(17, 33);
+                        itemGroup4 = items.subList(33, 38);
+                        itemGroup5 = items.subList(38, 47);
+                        itemGroup6 = items.subList(47, 51);
+                        itemGroup7 = items.subList(51, items.size());
+                    }
+                }
+                if (punishDTO.getTitleList() != null && !punishDTO.getTitleList().isEmpty()) {
+                    int k = 1;
+                    for (String title : punishDTO.getTitleList()) {
+                        PunishEntityWithBLOBs titleEntity = addTitle(title, 1, 5);
+                        if (k == 1) {
+                            if (itemGroup1 != null && !itemGroup1.isEmpty()) {
+                                addChapter(itemGroup1, titleEntity.getId(), titleEntity.getCategoryid(), 2);
+                            }
+                        } else if (k == 2) {
+                            if (itemGroup2 != null && !itemGroup2.isEmpty()) {
+                                addChapter(itemGroup2, titleEntity.getId(), titleEntity.getCategoryid(), 2);
+                            }
+                        } else if (k == 3) {
+                            if (itemGroup3 != null && !itemGroup3.isEmpty()) {
+                                addChapter(itemGroup3, titleEntity.getId(), titleEntity.getCategoryid(), 2);
+                            }
+                        } else if (k == 4) {
+                            if (itemGroup4 != null && !itemGroup4.isEmpty()) {
+                                addChapter(itemGroup4, titleEntity.getId(), titleEntity.getCategoryid(), 2);
+                            }
+                        } else if (k == 5) {
+                            if (itemGroup5 != null && !itemGroup5.isEmpty()) {
+                                addChapter(itemGroup5, titleEntity.getId(), titleEntity.getCategoryid(), 2);
+                            }
+                        } else if (k == 6) {
+                            if (itemGroup6 != null && !itemGroup6.isEmpty()) {
+                                addChapter(itemGroup6, titleEntity.getId(), titleEntity.getCategoryid(), 2);
+                            }
+                        } else if (k == 7) {
+                            if (itemGroup7 != null && !itemGroup7.isEmpty()) {
+                                addChapter(itemGroup7, titleEntity.getId(), titleEntity.getCategoryid(), 2);
+                            }
+                        }
+                        k++;
+                    }
+                }
+            }
+            if (entry.getKey().equals("dioInfo")) {
+                PunishDTO punishDTO = (PunishDTO) entry.getValue();
+                List<String> itemList = new ArrayList<>();
+                if (punishDTO.getItem() != null && !punishDTO.getItem().isEmpty()) {
+                    String item = punishDTO.getItem();
+                    String[] items = item.split("。");
+                    String itemInfo = "";
+                    int num = 1;
+                    for (int i = 0; i < items.length; i++) {
+                        String item1 = items[i];
+                        String nums = numToChinese.tranWan(num);
+                        String s3 = "第" + nums + "";
+                        int k = item1.indexOf(s3);
+                        if (k == -1) {
+                            itemInfo += item1;
+                            for (String si : itemList) {
+                                if (itemInfo.indexOf(si) != -1) {
+                                    itemList.remove(si);
+                                    break;
+                                }
+                            }
+                            itemList.add(itemInfo);
+                        } else {
+                            itemInfo = item1;
+                            itemList.add(itemInfo);
+                            num++;
+                        }
+                    }
+                }
+                List<String> items = new ArrayList<>();
+                if (punishDTO.getTitleList() != null && !punishDTO.getTitleList().isEmpty()) {
+                    int k = 1;
+                    for (String title : punishDTO.getTitleList()) {
+                        PunishEntityWithBLOBs titleEntity = addTitle(title, 1, 6);
+                        if (k == 1) {
+                            items = itemList.subList(0, 9);
+                            addChapter(items, titleEntity.getId(), titleEntity.getCategoryid(), 2);
+                        } else if (k == 2) {
+                            items = itemList.subList(9, 15);
+                            addChapter(items, titleEntity.getId(), titleEntity.getCategoryid(), 2);
+                        } else if (k == 3) {
+                            items = itemList.subList(15, 22);
+                            addChapter(items, titleEntity.getId(), titleEntity.getCategoryid(), 2);
+                        } else if (k == 4) {
+                            items = itemList.subList(22, 39);
+                            addChapter(items, titleEntity.getId(), titleEntity.getCategoryid(), 2);
+                        } else if (k == 5) {
+                            items = itemList.subList(39, 44);
+                            addChapter(items, titleEntity.getId(), titleEntity.getCategoryid(), 2);
+                        } else if (k == 6) {
+                            items = itemList.subList(44, 46);
+                            addChapter(items, titleEntity.getId(), titleEntity.getCategoryid(), 2);
+                        } else if (k == 7) {
+                            items = itemList.subList(46, itemList.size());
+                            addChapter(items, titleEntity.getId(), titleEntity.getCategoryid(), 2);
+                        }
+                        k++;
+                    }
+                }
+            }
+            if (entry.getKey().equals("rirInfo")) {
+                PunishDTO punishDTO = (PunishDTO) entry.getValue();
+                System.out.println(punishDTO);
+                List<String> itemList = new ArrayList<>();
+                if (punishDTO.getItem() != null && !punishDTO.getItem().isEmpty()) {
+                    String item = punishDTO.getItem();
+                    String[] items = item.split("。");
+                    String itemInfo = "";
+                    int num = 1;
+                    for (int i = 0; i < items.length; i++) {
+                        String item1 = items[i].replaceAll("―", "");
+
+                        String nums = numToChinese.tranWan(num);
+                        String s3 = "第" + nums + "";
+                        int k = item1.indexOf(s3);
+                        if (k == -1 || k >= 8) {
+                            itemInfo += item1;
+                            for (String si : itemList) {
+                                if (itemInfo.indexOf(si) != -1) {
+                                    itemList.remove(si);
+                                    break;
+                                }
+                            }
+                            itemList.add(itemInfo);
+                        } else {
+                            itemInfo = item1;
+                            itemList.add(itemInfo);
+                            num++;
+                        }
+                    }
+                }
+                System.out.println(itemList);
+                List<String> items = new ArrayList<>();
+                if (punishDTO.getTitleList() != null && !punishDTO.getTitleList().isEmpty()) {
+                    int k = 1;
+                    for (String title : punishDTO.getTitleList()) {
+                        PunishEntityWithBLOBs titleEntity = addTitle(title, 1, 7);
+                        if (k == 1) {
+                            items = itemList.subList(0, 4);
+                            addChapter(items, titleEntity.getId(), titleEntity.getCategoryid(), 2);
+                        } else if (k == 2) {
+                            items = itemList.subList(4, 12);
+                            addChapter(items, titleEntity.getId(), titleEntity.getCategoryid(), 2);
+                        } else if (k == 3) {
+                            items = itemList.subList(12, 20);
+                            addChapter(items, titleEntity.getId(), titleEntity.getCategoryid(), 2);
+                        } else if (k == 4) {
+                            items = itemList.subList(20, 39);
+                            addChapter(items, titleEntity.getId(), titleEntity.getCategoryid(), 2);
+                        } else if (k == 5) {
+                            items = itemList.subList(39, 47);
+                            addChapter(items, titleEntity.getId(), titleEntity.getCategoryid(), 2);
+                        } else if (k == 6) {
+                            items = itemList.subList(47, 50);
+                            addChapter(items, titleEntity.getId(), titleEntity.getCategoryid(), 2);
+                        } else if (k == 7) {
+                            items = itemList.subList(50, itemList.size());
+                            addChapter(items, titleEntity.getId(), titleEntity.getCategoryid(), 2);
+                        }
+                        k++;
+                    }
+                }
+            }
+            if (entry.getKey().equals("diacInfo")) {
+                PunishDTO punishDTO = (PunishDTO) entry.getValue();
+                List<String> itemList = new ArrayList<>();
+                if (punishDTO.getItem() != null && !punishDTO.getItem().isEmpty()) {
+                    String item = punishDTO.getItem();
+                    String[] items = item.split("。");
+                    String itemInfo = "";
+                    int num = 1;
+                    List<String> chapterList = new ArrayList<>();
+                    for (int i = 0; i < items.length; i++) {
+                        String item1 = items[i];
+                        String nums = numToChinese.tranWan(num);
+                        String s3 = "第" + nums + "条";
+                        int k = item1.indexOf(s3);
+                        if (k == -1) {
+                            itemInfo += item1;
+                            for (String si : itemList) {
+                                if (itemInfo.indexOf(si) != -1) {
+                                    itemList.remove(si);
+                                    break;
+                                }
+                            }
+                            itemList.add(itemInfo);
+                        } else {
+                            itemInfo = item1;
+                            itemList.add(itemInfo);
+                            num++;
+                        }
+                    }
+                }
+                List<String> items = new ArrayList<>();
+                if (punishDTO.getTitleList() != null && !punishDTO.getTitleList().isEmpty()) {
+                    int k = 1;
+                    for (String title : punishDTO.getTitleList()) {
+                        PunishEntityWithBLOBs titleEntity = addTitle(title, 1, 8);
+                        if (k == 1) {
+                            items = itemList.subList(0, 6);
+                            addChapter(items, titleEntity.getId(), titleEntity.getCategoryid(), 2);
+                        } else if (k == 2) {
+                            items = itemList.subList(6, 24);
+                            addChapter(items, titleEntity.getId(), titleEntity.getCategoryid(), 2);
+                        } else if (k == 3) {
+                            items = itemList.subList(24, 39);
+                            addChapter(items, titleEntity.getId(), titleEntity.getCategoryid(), 2);
+                        } else if (k == 4) {
+                            items = itemList.subList(39, 43);
+                            addChapter(items, titleEntity.getId(), titleEntity.getCategoryid(), 2);
+                        } else if (k == 5) {
+                            items = itemList.subList(43, itemList.size());
+                            addChapter(items, titleEntity.getId(), titleEntity.getCategoryid(), 2);
+                        }
+                        k++;
+                    }
+                }
+            }
+            if (entry.getKey().equals("ormInfo")) {
+                PunishDTO punishDTO = (PunishDTO) entry.getValue();
+                crawlingORM(punishDTO);
+            }
         }
+    }
+
+    /**
+     * 爬取 监察机关举报工作办法 数据
+     *
+     * @param punishDTO
+     */
+    private void crawlingORM(PunishDTO punishDTO) {
+        if (punishDTO.getTitleList() != null && !punishDTO.getTitleList().isEmpty()) {
+            List<String> lists = new ArrayList<>();
+            for (String list : punishDTO.getTitleList()) {
+                if (!list.equals("")) {
+                    lists.add(list);
+                }
+            }
+            if (lists != null && !lists.isEmpty()) {
+                List<String> titleList = new ArrayList<>();
+                List<String> itemList = new ArrayList<>();
+                int num = 1;
+                for (String list : lists) {
+                    String nums = numToChinese.tranWan(num);
+                    String s3 = "第" + nums + "章";
+                    int k = list.indexOf(s3);
+                    if (k == -1) {
+                        itemList.add(list);
+                    } else {
+                        titleList.add(list);
+                        num++;
+                    }
+                }
+                List<String> itemInfoList = new ArrayList<>();
+                List<String> dataList = new ArrayList<>();
+                if (itemList != null && !itemList.isEmpty()) {
+                    itemInfoList = getItemList(itemList);
+                }
+                if (titleList != null && !titleList.isEmpty()) {
+                    int k = 1;
+                    for (String title : titleList) {
+                        PunishEntityWithBLOBs entity = addTitle(title, 1, 9);
+                        if (itemInfoList != null && !itemInfoList.isEmpty()) {
+                            if (k == 1) {
+                                dataList = itemInfoList.subList(0, 5);
+                                addChapter(dataList, entity.getId(), entity.getCategoryid(), 2);
+                            } else if (k == 2) {
+                                dataList = itemInfoList.subList(5, 9);
+                                addChapter(dataList, entity.getId(), entity.getCategoryid(), 2);
+                            } else if (k == 3) {
+                                dataList = itemInfoList.subList(9, 18);
+                                addChapter(dataList, entity.getId(), entity.getCategoryid(), 2);
+                            } else if (k == 4) {
+                                dataList = itemInfoList.subList(18, 26);
+                                addChapter(dataList, entity.getId(), entity.getCategoryid(), 2);
+                            } else if (k == 5) {
+                                dataList = itemInfoList.subList(26, itemInfoList.size());
+                                addChapter(dataList, entity.getId(), entity.getCategoryid(), 2);
+                            }
+                        }
+                        k++;
+                    }
+                }
+            }
+        }
+    }
+
+    private List<String> getItemList(List<String> lists) {
+        int num = 1;
+        String data = "";
+        List<String> dataList = new ArrayList<>();
+        for (String list : lists) {
+            String chineseNum = numToChinese.tranWan(num);
+            String s = "第" + chineseNum + "条";
+            int k = list.indexOf(s);
+            if (k == -1) {
+                data += list;
+                for (String c : dataList) {
+                    if (data.indexOf(c) != -1) {
+                        dataList.remove(c);
+                        break;
+                    }
+                }
+                dataList.add(data);
+            } else {
+                data = list;
+                dataList.add(data);
+                num++;
+            }
+        }
+        return dataList;
     }
 
     private PunishEntityWithBLOBs addTitle(String title, int level, int categoryId) {
@@ -537,6 +893,5 @@ public class HupuSpiderPipeline implements Pipeline {
             it.setLevel(3);
             punishEntityMapper.insert(it);
         }
-
     }
 }

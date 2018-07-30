@@ -5,7 +5,6 @@ import us.codecraft.webmagic.Page;
 import us.codecraft.webmagic.Site;
 import us.codecraft.webmagic.processor.PageProcessor;
 
-import javax.imageio.plugins.tiff.TIFFDirectory;
 import java.util.List;
 import java.util.Random;
 
@@ -30,7 +29,12 @@ public class HupuBxjPageProcessor implements PageProcessor {//修改改类，定
 //        crawlPost(page);
 //        aslPost(page);
 //        aslirPost(page);
-        cpcPost(page);
+//        cpcPost(page);
+//        aodrPost(page);
+//        dioPost(page);
+//        rirPost(page);
+//        diacPost(page);
+        ormPost(page);
     }
 
 
@@ -142,11 +146,98 @@ public class HupuBxjPageProcessor implements PageProcessor {//修改改类，定
     /**
      * 行政机关公务员处分条例
      * Administrative Organs Disciplinary Regulations
+     *
      * @param page
      */
-    private void aodrPost(Page page){
+    private void aodrPost(Page page) {
         page.addTargetRequests(page.getHtml().links().regex("(http://jxw\\.panzhihua\\.gov\\.cn/\\w+/\\w+)").all());
-        List<String> titleList = page.getHtml().xpath("//div[@class='nr3']/p/strong/text()").all();
-        List<String> chapterList = page.getHtml().xpath("//div[@class='word']/p/text()").all();
+        List<String> titleList = page.getHtml().xpath("//div[@class='nr3']/p/strong/span/text()").all();
+        List<String> chapterList = page.getHtml().xpath("//div[@class='nr3']/p/span[@style='font-family: 仿宋_GB2312; font-size: 14pt']/text()").all();
+        setAodrPost(titleList, chapterList, page);
+    }
+
+    private void setAodrPost(List<String> titleList, List<String> chapterList, Page page) {
+        PunishDTO punishDTO = new PunishDTO();
+        punishDTO.setTitleList(titleList);
+        punishDTO.setChapterList(chapterList);
+        page.putField("aodrInfo", punishDTO);
+    }
+
+    /**
+     * 中国共产党纪律检查机关案件检查工作条例
+     * Regulations on the Inspection of Cases of the Communist Party of China Discipline Inspection Organs
+     *
+     * @param page
+     */
+    private void dioPost(Page page) {
+        page.addTargetRequests(page.getHtml().links().regex("(http://cpc\\.people\\.com\\.cn/\\w+/\\w+)").all());
+        List<String> titleList = page.getHtml().xpath("//font[@class='fbody']/b/text()").all();
+        String items = page.getHtml().xpath("//font[@class='fbody']/text()").toString();
+        setDio(titleList, items, page);
+    }
+
+    private void setDio(List<String> titleList, String items, Page page) {
+        PunishDTO punishDTO = new PunishDTO();
+        punishDTO.setTitleList(titleList);
+        punishDTO.setItem(items);
+        page.putField("dioInfo", punishDTO);
+    }
+
+    /**
+     * 中国共产党纪律检查机关案件检查工作条例实施细则
+     * Rules for the Implementation of the Regulations on the Inspection of Cases by the Communist Party of China
+     *
+     * @param page
+     */
+    private void rirPost(Page page) {
+        page.addTargetRequests(page.getHtml().links().regex("(http://cpc\\.people\\.com\\.cn/\\w+/\\w+)").all());
+        List<String> titleList = page.getHtml().xpath("//font[@class='fbody']/b/text()").all();
+        String items = page.getHtml().xpath("//font[@class='fbody']/text()").toString();
+        setRir(titleList, items, page);
+    }
+
+    private void setRir(List<String> titleList, String items, Page page) {
+        PunishDTO punishDTO = new PunishDTO();
+        punishDTO.setTitleList(titleList);
+        punishDTO.setItem(items);
+        page.putField("rirInfo", punishDTO);
+    }
+
+    /**
+     * 中国共产党纪律检查机关控告申诉工作条例
+     * The Communist Party of China's disciplinary inspection agency accuses the complaints work regulations
+     *
+     * @param page
+     */
+    private void diacPost(Page page) {
+        page.addTargetRequests(page.getHtml().links().regex("(http://cpc\\.people\\.com\\.cn/GB/64162/71380/71387/71590/\\w+/\\w+)").all());
+        List<String> titleList = page.getHtml().xpath("//font[@class='fbody']/b/text()").all();
+        String items = page.getHtml().xpath("//font[@class='fbody']/text()").toString();
+        setDiac(titleList, items, page);
+    }
+
+    private void setDiac(List<String> titleList, String items, Page page) {
+        PunishDTO punishDTO = new PunishDTO();
+        punishDTO.setTitleList(titleList);
+        punishDTO.setItem(items);
+        page.putField("diacInfo", punishDTO);
+    }
+
+    /**
+     * 监察机关举报工作办法
+     * Ombudsman reporting methods
+     *
+     * @param page
+     */
+    private void ormPost(Page page) {
+        page.addTargetRequests(page.getHtml().links().regex("(http://www\\.gov\\.cn/fwxx/\\w+/\\w+)").all());
+        List<String> titleList = page.getHtml().xpath("//font[@id='Zoom']/p/text()").all();
+        setOrm(titleList, page);
+    }
+
+    private void setOrm(List<String> list, Page page) {
+        PunishDTO punishDTO = new PunishDTO();
+        punishDTO.setTitleList(list);
+        page.putField("ormInfo", punishDTO);
     }
 }
