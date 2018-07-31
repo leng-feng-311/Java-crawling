@@ -18,6 +18,7 @@ public class StartUpController {
 
     @Autowired
     HupuSpiderPipeline hupuSpiderPipeline;
+
     /*
     @Autowired
     ProxyIpMapper proxyIpMapper;
@@ -48,7 +49,19 @@ public class StartUpController {
 //                .addUrl("http://cpc.people.com.cn/GB/64162/71380/71387/71590/4855976.html")
                 //监察机关举报工作办法
                 // .setCharset("UTF-8")
-                .addUrl("http://www.gov.cn/fwxx/content_2266820.htm")
+//                .addUrl("http://www.gov.cn/fwxx/content_2266820.htm")
+                //中华人民共和国信访条例
+                // .setCharset("GB2312")
+//                .addUrl("http://www.gjxfj.gov.cn/2005-01/18/content_3583093.htm")
+                //中国共产党廉洁自律准则
+                //.setCharset("UTF-8")
+//                .addUrl("http://news.12371.cn/2015/10/22/ARTI1445481444215144.shtml")
+                //中国共产党党内监督条例
+                //.setCharset("UTF-8")
+//                .addUrl("http://news.12371.cn/2016/11/02/ARTI1478087905680175.shtml")
+                //事业单位人事管理条例
+                //.setCharset("UTF-8")
+                .addUrl("http://news.12371.cn/2014/05/15/ARTI1400120337721176.shtml")
                 .addPipeline(hupuSpiderPipeline)
                 .thread(4)
                 .run();

@@ -34,7 +34,11 @@ public class HupuBxjPageProcessor implements PageProcessor {//修改改类，定
 //        dioPost(page);
 //        rirPost(page);
 //        diacPost(page);
-        ormPost(page);
+//        ormPost(page);
+//        lvoPost(page);
+//        selfPost(page);
+//        superPost(page);
+        ipmrPost(page);
     }
 
 
@@ -239,5 +243,77 @@ public class HupuBxjPageProcessor implements PageProcessor {//修改改类，定
         PunishDTO punishDTO = new PunishDTO();
         punishDTO.setTitleList(list);
         page.putField("ormInfo", punishDTO);
+    }
+
+    /**
+     * 中华人民共和国信访条例
+     * Letters and Visits Ordinance
+     */
+    private void lvoPost(Page page) {
+        page.addTargetRequests(page.getHtml().links().regex("(http://www\\.gjxfj\\.gov\\.cn/2005-01/18/\\w+/\\w+)").all());
+        List<String> titleList = page.getHtml().xpath("//font[@id='Zoom']//p[@align='center']/strong/text()").all();
+        List<String> itemList = page.getHtml().xpath("//font[@id='Zoom']//p/text()").all();
+        setLvo(titleList, itemList, page);
+    }
+
+    private void setLvo(List<String> titleList, List<String> itmeList, Page page) {
+        PunishDTO punishDTO = new PunishDTO();
+        punishDTO.setTitleList(titleList);
+        punishDTO.setChapterList(itmeList);
+        page.putField("lvoInfo", punishDTO);
+    }
+
+    /**
+     * 中国共产党廉洁自律准则
+     * Chinese Communist Party's self-discipline guidelines
+     */
+    private void selfPost(Page page) {
+        page.addTargetRequests(page.getHtml().links().regex("(http://news\\.12371\\.cn/2015/10/22/\\w+/\\w+)").all());
+        List<String> titleList = page.getHtml().xpath("//div[@class='word']/p/strong/text()").all();
+        List<String> itemList = page.getHtml().xpath("//div[@class='word']/p/text()").all();
+        setSelf(titleList, itemList, page);
+    }
+
+    private void setSelf(List<String> titleList, List<String> itmeList, Page page) {
+        PunishDTO punishDTO = new PunishDTO();
+        punishDTO.setTitleList(titleList);
+        punishDTO.setChapterList(itmeList);
+        page.putField("selfInfo", punishDTO);
+    }
+
+    /**
+     * 中国共产党党内监督条例
+     * Communist Party of China Party Supervision Regulations
+     */
+    private void superPost(Page page) {
+        page.addTargetRequests(page.getHtml().links().regex("(http://news\\.12371\\.cn/2016/11/02/\\w+/\\w+)").all());
+        List<String> titleList = page.getHtml().xpath("//div[@class='word']/p/strong/text()").all();
+        List<String> itemList = page.getHtml().xpath("//div[@class='word']/p/text()").all();
+        setSuper(titleList, itemList, page);
+    }
+
+    private void setSuper(List<String> titleList, List<String> itmeList, Page page) {
+        PunishDTO punishDTO = new PunishDTO();
+        punishDTO.setTitleList(titleList);
+        punishDTO.setChapterList(itmeList);
+        page.putField("superInfo", punishDTO);
+    }
+
+    /**
+     * 事业单位人事管理条例
+     * Institutional Personnel Management Regulations
+     */
+    private void ipmrPost(Page page) {
+        page.addTargetRequests(page.getHtml().links().regex("(http://news\\.12371\\.cn/2014/05/15/\\w+/\\w+)").all());
+        List<String> titleList = page.getHtml().xpath("//div[@class='word']/p/strong/text()").all();
+        List<String> itemList = page.getHtml().xpath("//div[@class='word']/p/text()").all();
+        setIPMR(titleList, itemList, page);
+    }
+
+    private void setIPMR(List<String> titleList, List<String> itmeList, Page page) {
+        PunishDTO punishDTO = new PunishDTO();
+        punishDTO.setTitleList(titleList);
+        punishDTO.setChapterList(itmeList);
+        page.putField("ipmrInfo", punishDTO);
     }
 }

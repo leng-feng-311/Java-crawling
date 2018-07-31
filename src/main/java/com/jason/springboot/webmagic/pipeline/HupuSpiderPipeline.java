@@ -2,6 +2,7 @@ package com.jason.springboot.webmagic.pipeline;
 
 import com.jason.springboot.application.DTO.PunishDTO;
 import com.jason.springboot.dao.PunishEntityMapper;
+import com.jason.springboot.model.PunishEntity;
 import com.jason.springboot.model.PunishEntityWithBLOBs;
 import com.jason.springboot.utils.NumberChangeToChinese;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,10 +11,8 @@ import us.codecraft.webmagic.ResultItems;
 import us.codecraft.webmagic.Task;
 import us.codecraft.webmagic.pipeline.Pipeline;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.StringTokenizer;
+import java.net.PortUnreachableException;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -763,6 +762,166 @@ public class HupuSpiderPipeline implements Pipeline {
                 PunishDTO punishDTO = (PunishDTO) entry.getValue();
                 crawlingORM(punishDTO);
             }
+            if (entry.getKey().equals("lvoInfo")) {
+                PunishDTO punishDTO = (PunishDTO) entry.getValue();
+                crawlingLVO(punishDTO);
+            }
+            if (entry.getKey().equals("selfInfo")) {
+                PunishDTO punishDTO = (PunishDTO) entry.getValue();
+                crawlingSelf(punishDTO);
+            }
+            if (entry.getKey().equals("superInfo")) {
+                PunishDTO punishDTO = (PunishDTO) entry.getValue();
+                crawlingSUPER(punishDTO);
+            }
+            if (entry.getKey().equals("ipmrInfo")) {
+                PunishDTO punishDTO = (PunishDTO) entry.getValue();
+                crawlingIPMR(punishDTO);
+            }
+        }
+    }
+
+    private void crawlingIPMR(PunishDTO punishDTO) {
+        System.out.println(punishDTO);
+        List<String> titleList = new ArrayList<>();
+        List<String> itemList = new ArrayList<>();
+        if (punishDTO.getChapterList() != null && !punishDTO.getChapterList().isEmpty()) {
+            remove(punishDTO.getChapterList());
+            itemList = getItemList(punishDTO.getChapterList());
+        }
+        if (punishDTO.getTitleList() != null && !punishDTO.getTitleList().isEmpty()) {
+            titleList = punishDTO.getTitleList().subList(1, punishDTO.getTitleList().size());
+            int k = 1;
+            for (String title : titleList) {
+                PunishEntityWithBLOBs entity = addTitle(title, 1, 13);
+                if (k == 1) {
+                    addChapter(itemList.subList(0, 4), entity.getId(), entity.getCategoryid(), 2);
+                } else if (k == 2) {
+                    addChapter(itemList.subList(4, 7), entity.getId(), entity.getCategoryid(), 2);
+                } else if (k == 3) {
+                    addChapter(itemList.subList(7, 11), entity.getId(), entity.getCategoryid(), 2);
+                } else if (k == 4) {
+                    addChapter(itemList.subList(11, 19), entity.getId(), entity.getCategoryid(), 2);
+                } else if (k == 5) {
+                    addChapter(itemList.subList(19, 24), entity.getId(), entity.getCategoryid(), 2);
+                } else if (k == 6) {
+                    addChapter(itemList.subList(24, 31), entity.getId(), entity.getCategoryid(), 2);
+                } else if (k == 7) {
+                    addChapter(itemList.subList(31, 36), entity.getId(), entity.getCategoryid(), 2);
+                } else if (k == 8) {
+                    addChapter(itemList.subList(36, 40), entity.getId(), entity.getCategoryid(), 2);
+                } else if (k == 9) {
+                    addChapter(itemList.subList(40, 43), entity.getId(), entity.getCategoryid(), 2);
+                } else if (k == 10) {
+                    addChapter(itemList.subList(43, itemList.size()), entity.getId(), entity.getCategoryid(), 2);
+                }
+                k++;
+            }
+        }
+    }
+
+    /**
+     * 抓取 中国共产党党内监督条例 信息
+     *
+     * @param punishDTO
+     */
+    private void crawlingSUPER(PunishDTO punishDTO) {
+        List<String> titleList = new ArrayList<>();
+        List<String> itemList = new ArrayList<>();
+        if (punishDTO.getChapterList() != null && !punishDTO.getChapterList().isEmpty()) {
+            remove(punishDTO.getChapterList());
+            itemList = getItemList(punishDTO.getChapterList());
+        }
+        if (punishDTO.getTitleList() != null && !punishDTO.getTitleList().isEmpty()) {
+            remove(punishDTO.getTitleList());
+            titleList = punishDTO.getTitleList().subList(2, punishDTO.getTitleList().size() - 1);
+            int k = 1;
+            for (String title : titleList) {
+                PunishEntityWithBLOBs entity = addTitle(title, 1, 12);
+                if (k == 1) {
+                    addChapter(itemList.subList(0, 9), entity.getId(), entity.getCategoryid(), 2);
+                } else if (k == 2) {
+                    addChapter(itemList.subList(9, 14), entity.getId(), entity.getCategoryid(), 2);
+                } else if (k == 3) {
+                    addChapter(itemList.subList(14, 25), entity.getId(), entity.getCategoryid(), 2);
+                } else if (k == 4) {
+                    addChapter(itemList.subList(25, 34), entity.getId(), entity.getCategoryid(), 2);
+                } else if (k == 5) {
+                    addChapter(itemList.subList(34, 36), entity.getId(), entity.getCategoryid(), 2);
+                } else if (k == 6) {
+                    addChapter(itemList.subList(36, 39), entity.getId(), entity.getCategoryid(), 2);
+                } else if (k == 7) {
+                    addChapter(itemList.subList(39, 44), entity.getId(), entity.getCategoryid(), 2);
+                } else if (k == 8) {
+                    addChapter(itemList.subList(44, itemList.size()), entity.getId(), entity.getCategoryid(), 2);
+                }
+                k++;
+            }
+        }
+    }
+
+    /**
+     * 抓取 中国共产党廉洁自律准则 信息
+     *
+     * @param punishDTO
+     */
+    private void crawlingSelf(PunishDTO punishDTO) {
+        if (punishDTO.getChapterList() != null && !punishDTO.getChapterList().isEmpty()) {
+            remove(punishDTO.getChapterList());
+        }
+        if (punishDTO.getTitleList() != null && !punishDTO.getTitleList().isEmpty()) {
+            int k = 1;
+            for (String title : punishDTO.getTitleList()) {
+                PunishEntityWithBLOBs entity = addTitle(title, 1, 11);
+                if (k == 1) {
+                    addChapter(punishDTO.getChapterList().subList(1, 5), entity.getId(), entity.getCategoryid(), 2);
+                } else if (k == 2) {
+                    addChapter(punishDTO.getChapterList().subList(5, punishDTO.getChapterList().size()), entity.getId(), entity.getCategoryid(), 2);
+                }
+                k++;
+            }
+        }
+    }
+
+    /**
+     * 爬取 中华人民共和国信访条例 信息
+     *
+     * @param punishDTO
+     */
+    private void crawlingLVO(PunishDTO punishDTO) {
+        List<String> titleList = new ArrayList<>();
+        if (punishDTO.getTitleList() != null && !punishDTO.getTitleList().isEmpty()) {
+            titleList = punishDTO.getTitleList().subList(2, punishDTO.getTitleList().size());
+        }
+        List<String> itemList = new ArrayList<>();
+        if (punishDTO.getChapterList() != null && !punishDTO.getChapterList().isEmpty()) {
+            remove(punishDTO.getChapterList());
+            itemList = punishDTO.getChapterList().subList(3, punishDTO.getChapterList().size());
+        }
+        if (itemList != null && !itemList.isEmpty()) {
+            itemList = getItemList(itemList);
+        }
+        if (titleList != null && !titleList.isEmpty()) {
+            int k = 1;
+            for (String title : titleList) {
+                PunishEntityWithBLOBs entity = addTitle(title, 1, 10);
+                if (k == 1) {
+                    addChapter(itemList.subList(0, 8), entity.getId(), entity.getCategoryid(), 2);
+                } else if (k == 2) {
+                    addChapter(itemList.subList(8, 13), entity.getId(), entity.getCategoryid(), 2);
+                } else if (k == 3) {
+                    addChapter(itemList.subList(13, 20), entity.getId(), entity.getCategoryid(), 2);
+                } else if (k == 4) {
+                    addChapter(itemList.subList(20, 27), entity.getId(), entity.getCategoryid(), 2);
+                } else if (k == 5) {
+                    addChapter(itemList.subList(27, 39), entity.getId(), entity.getCategoryid(), 2);
+                } else if (k == 6) {
+                    addChapter(itemList.subList(39, 48), entity.getId(), entity.getCategoryid(), 2);
+                } else if (k == 7) {
+                    addChapter(itemList.subList(48, itemList.size()), entity.getId(), entity.getCategoryid(), 2);
+                }
+                k++;
+            }
         }
     }
 
@@ -892,6 +1051,16 @@ public class HupuSpiderPipeline implements Pipeline {
             it.setCategoryid(categoryId);
             it.setLevel(3);
             punishEntityMapper.insert(it);
+        }
+    }
+
+    private void remove(List<String> list) {
+        Iterator<String> it = list.iterator();
+        while (it.hasNext()) {
+            String x = it.next();
+            if (x.equals("") || x.equals(" ") || x.equals("  ") || x.equals("　 ") || x.equals("　") || x.equals("　　")) {
+                it.remove();
+            }
         }
     }
 }
