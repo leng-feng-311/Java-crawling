@@ -4,7 +4,7 @@ package com.jason.springboot.utils;
  * Created by jiazefeng on 18/07/26.
  */
 public class NumberChangeToChinese {
-    public String numberToChinese(int num) {//转化一个阿拉伯数字为中文字符串
+    public  String numberToChinese(int num) {//转化一个阿拉伯数字为中文字符串
         if (num == 0) {
             return "零";
         }

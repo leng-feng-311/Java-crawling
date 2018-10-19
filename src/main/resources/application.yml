@@ -23,6 +23,15 @@ spring:
     maxPoolPreparedStatementPerConnectionSize: 20
     useGlobalDataSourceStat: true
     connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=500
+  # 配置solr
+  data:
+    solr:
+      host: http://192.168.0.190:8080/solr
+      repositories:
+        enabled: true
+  #配置Redis
+  redis:
+    host: 192.168.0.190
 
 mybatis:
   # 指定全局配置文件位置

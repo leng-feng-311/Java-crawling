@@ -37,16 +37,16 @@ public class Main {
 ////        System.out.println("1001:"+numToChinese.numberToChinese(1001));
 ////        System.out.println("1015:"+numToChinese.numberToChinese(1015));
 ////        System.out.println("1000:"+numToChinese.numberToChinese(1000));
-////        System.out.println("10000:"+numToChinese.numberToChinese(10000));
-////        System.out.println("20010"+numToChinese.numberToChinese(20010));
-////        System.out.println("20001"+numToChinese.numberToChinese(20001));
-////        System.out.println("100000:"+numToChinese.numberToChinese(100000));
-////        System.out.println("1000000:"+numToChinese.numberToChinese(1000000));
-////        System.out.println("10000000"+numToChinese.numberToChinese(10000000));
-////        System.out.println("100000000:"+numToChinese.numberToChinese(100000000));
-////        System.out.println("1000000000"+numToChinese.numberToChinese(1000000000));
-////        System.out.println("2000105"+numToChinese.numberToChinese(2000105));
-////        System.out.println("20001007:"+numToChinese.numberToChinese(20001007));
+//////        System.out.println("10000:"+numToChinese.numberToChinese(10000));
+//////        System.out.println("20010"+numToChinese.numberToChinese(20010));
+//////        System.out.println("20001"+numToChinese.numberToChinese(20001));
+//////        System.out.println("100000:"+numToChinese.numberToChinese(100000));
+//////        System.out.println("1000000:"+numToChinese.numberToChinese(1000000));
+//////        System.out.println("10000000"+numToChinese.numberToChinese(10000000));
+//////        System.out.println("100000000:"+numToChinese.numberToChinese(100000000));
+//////        System.out.println("1000000000"+numToChinese.numberToChinese(1000000000));
+//////        System.out.println("2000105"+numToChinese.numberToChinese(2000105));
+//////        System.out.println("20001007:"+numToChinese.numberToChinese(20001007));
 ////        System.out.println("2005010010:"+numToChinese.numberToChinese(2005010010));
 //    }
     private String toChinese(String string) {

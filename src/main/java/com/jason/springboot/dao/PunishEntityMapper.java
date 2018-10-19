@@ -17,4 +17,5 @@ public interface PunishEntityMapper {
     int updateByPrimaryKeyWithBLOBs(PunishEntityWithBLOBs record);
 
     int updateByPrimaryKey(PunishEntity record);
+
 }

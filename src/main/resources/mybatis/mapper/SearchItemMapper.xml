@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jason.springboot.dao.SearchItemMapper">
+    <select id="getItemList" parameterType="java.lang.Integer"
+            resultType="com.jason.springboot.application.DTO.SearchItem">
+        SELECT
+        p.id,
+        p.title,
+        p.chapter,
+        p.items,
+        p.parentId,
+        c.`name` category_name
+        FROM
+        punish p
+        LEFT JOIN category c ON c.id = p.categoryId
+        <where>
+            <trim suffixOverrides="and">
+                <if test="level > 0">
+                    p.level=#{level,jdbcType=INTEGER} and
+                </if>
+                <if test="parentId > 0">
+                    p.parentId=#{parentId,jdbcType=INTEGER}
+                </if>
+            </trim>
+        </where>
+    </select>
+    <select id="getItems"
+            resultType="com.jason.springboot.application.DTO.SearchItem">
+        SELECT
+            p1.id,
+            p.title,
+            p.chapter,
+            p1.items,
+            c.`name` category_name
+        FROM
+        punish p
+        LEFT JOIN punish p1 ON p1.parentId = p.id
+        LEFT JOIN category c ON c.id = p.categoryId
+        WHERE p.`level`=1 AND p1.`level`=2 AND c.id != 1
+    </select>
+    <select id="getChapterItems"
+            resultType="com.jason.springboot.application.DTO.SearchItem">
+       SELECT
+            p2.id,
+            p.title,
+            p1.chapter,
+            p2.items,
+            c.`name` category_name
+        FROM
+            punish p
+        LEFT JOIN punish p1 ON p1.parentId = p.id
+        LEFT JOIN punish p2 ON p2.parentId = p1.id
+        LEFT JOIN category c ON c.id = p.categoryId
+        WHERE p.`level`=1  AND p1.`level`=2 AND p2.`level`=3 AND c.id=1
+    </select>
+</mapper>

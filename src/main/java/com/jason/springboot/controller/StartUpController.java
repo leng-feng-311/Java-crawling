@@ -23,7 +23,7 @@ public class StartUpController {
     @Autowired
     ProxyIpMapper proxyIpMapper;
     */
-    @GetMapping("/")
+    @GetMapping("/paqu")
     public String index() {
 
         Spider.create(new HupuBxjPageProcessor())
